@@ -1,0 +1,18 @@
+function y = lwlr(X_train, y_train, x, tau)
+
+lambda = 0.0001;
+m = size(X_train,1);
+n = size(X_train,2);
+
+theta = zeros(n,1);
+
+% X_train is a 69x2 traning set and the sample data is a 1x2 vector
+% compute weights sum(A,dimension): the sum along the dimensions 
+w = exp(-sum((X_train - repmat(x',m,1).^2),2) / (2 * tau));
+
+% perform newtons method 
+g = ones(n,1);
+while ( norm(g) > 1e-6)
+    h = 1./ (1 + exp(-X_train * theta));
+    g = X_train' * (w *(y_train) - h)
+    H = X_train' * diag(w*h*(1-h)) * X
